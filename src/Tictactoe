@@ -1,0 +1,136 @@
+package com.dmdev.oop.lesson1;
+
+import java.util.Scanner;
+
+public class Tic_Tac {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int index = 1;
+        int index1 = 0;
+        String[][] field = new String[3][3];
+        String[][] f = new String[3][3];
+        f[0][0] = " ";
+        f[0][1] = " ";
+        f[0][2] = " ";
+        f[1][0] = " ";
+        f[1][1] = " ";
+        f[1][2] = " ";
+        f[2][0] = " ";
+        f[2][1] = " ";
+        f[2][2] = " ";
+
+        System.out.println("---------");// вывод пустого массива
+        for (int i = 0; i < f.length; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < f[i].length; j++) {
+                System.out.print(f[i][j] + " ");
+            }
+            System.out.print("|");
+            System.out.println();
+        }
+        System.out.println("---------");
+
+
+        while (true) {
+            System.out.print("Enter the coordinates:");
+            String x1 = s.next();
+            String y1 = s.next();
+            if (x1.equals("1") || x1.equals("2") || x1.equals("3") && (y1.equals("1") || y1.equals("2") || y1.equals("3"))) {
+                int x = Integer.parseInt(x1) - 1;
+                int y = Integer.parseInt(y1) - 1;
+                if (x > 2 || y > 2) {// проверка диапазона координат
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    continue;
+                }// Проверка диапазона координат
+                if (f[x][y] != " ") {
+                    System.out.println("This cell is occupied! Choose another one!");
+                    continue;
+                }
+                for (int i = 0; i < 3; ++i) { // Заполнение массива по координатам
+                    for (int j = 0; j < 3; ++j) {
+                        if (i == x && j == y) {
+                            if (index % 2 != 0) {
+                                field[x][y] = "X";
+                            } else {
+                                field[x][y] = "O";
+                            }
+                        } else {
+                            field[i][j] = " ";
+                        }
+                    }
+                    f[x][y] = field[x][y];
+                }// Заполнение массива по координатам и вывод
+                //   System.out.println(Arrays.deepToString(f));
+                System.out.println("---------");
+                for (int i = 0; i < f.length; i++) {
+                    System.out.print("| ");
+                    for (int j = 0; j < f[i].length; j++) {
+                        System.out.print(f[i][j] + " ");
+                    }
+                    System.out.print("|");
+                    System.out.println();
+                }
+                System.out.println("---------");
+                index++;
+                //Цикл проверки игры на победителя!
+                for (int i = 0; i < f.length; i++) {
+                    for (int j = 0; j < f[i].length; j++) { //Проверка по горизонтали
+                        if (f[0][0].equals("X") && f[0][1].equals("X") && f[0][2].equals("X")
+                                || (f[1][0].equals("X") && f[1][1].equals("X") && f[1][2].equals("X")
+                                || (f[2][0].equals("X") && f[2][1].equals("X") && f[2][2].equals("X")))) {
+                            index1 = 1;
+                            break;
+                        }
+                        if (f[0][0].equals("O") && f[0][1].equals("O") && f[0][2].equals("O") //Проверка по горизонтали
+                                || (f[1][0].equals("O") && f[1][1].equals("O") && f[1][2].equals("O")
+                                || (f[2][0].equals("O") && f[2][1].equals("O") && f[2][2].equals("O")))) {
+                            index1 = 2;
+                            break;
+                        }
+                        if (f[0][0].equals("X") && f[1][0].equals("X") && f[2][0].equals("X") //Проверка по вертикали
+                                || (f[0][1].equals("X") && f[1][1].equals("X") && f[2][1].equals("X")
+                                || (f[0][2].equals("X") && f[1][2].equals("X") && f[2][2].equals("X")))) {
+                            index1 = 1;
+                            break;
+                        }
+                        if (f[0][0].equals("O") && f[1][0].equals("O") && f[2][0].equals("O") //Проверка по вертикали
+                                || (f[0][1].equals("O") && f[1][1].equals("O") && f[2][1].equals("O")
+                                || (f[0][2].equals("O") && f[1][2].equals("O") && f[2][2].equals("O")))) {
+                            index1 = 2;
+                            break;
+                        }
+                        if (f[0][0].equals("O") && f[1][1].equals("O") && f[2][2].equals("O") // Проверка по диагонали
+                                || (f[0][2].equals("O") && f[1][1].equals("O") && f[2][0].equals("O"))) {
+                            index1 = 2;
+                            break;
+                        }
+                        if (f[0][0].equals("X") && f[1][1].equals("X") && f[2][2].equals("X") //Проверка по диагонали
+                                || (f[0][2].equals("X") && f[1][1].equals("X") && f[2][0].equals("X"))) {
+                            index1 = 1;
+                            break;
+                        }
+                    }
+                }
+            } else if (x1.equals("4") || x1.equals("5") || x1.equals("6")
+                    && (y1.equals("4") || y1.equals("5") || y1.equals("6"))) {
+                System.out.println("Coordinates should be from 1 to 3!");
+            } else {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+            if (index1 == 1) {
+                System.out.println("X wins ");
+                break;
+            }
+            if (index1 == 2) {
+                System.out.println("O wins ");
+                break;
+            }
+            if (index > 9) {
+                System.out.println("Draw");
+                break;
+            }
+        }
+    }
+}
+
